@@ -5,7 +5,7 @@ export const mockProjects: Project[] = [
     title: "Dev Match",
     description:
       "A platform to connect developers looking to build and collaborate on side projects.",
-    stack: ["Next.js", "FastAPI", "PostgreSQL"],
+    stack: ["Next.js", "FastAPI", "PostgreSQL", "Prisma ORM", "React.js"],
     roles_needed: ["Frontend", "Backend"],
     commitment_level: "Part-time",
     creator: {

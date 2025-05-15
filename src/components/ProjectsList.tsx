@@ -1,5 +1,4 @@
-"use client";
-
+import { motion } from "framer-motion";
 import ProjectCard from "@/components/ProjectCard";
 import { mockProjects } from "@/lib/mockProjects";
 
@@ -16,9 +15,16 @@ export default function ProjectsList() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 overflow-visible">
           {mockProjects.map((project, idx) => (
-            <ProjectCard key={idx} {...project} />
+            <motion.div
+              key={idx}
+              whileHover={{ y: -1, scale: 1.01 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-visible h-full"
+            >
+              <ProjectCard {...project} />
+            </motion.div>
           ))}
         </div>
       </section>
