@@ -1,8 +1,19 @@
 import { motion } from "framer-motion";
 import ProjectCard from "@/components/ProjectCard";
-import { mockProjects } from "@/lib/mockProjects";
+import { useProjectStore } from "@/lib/stores/projectStore";
+import { useEffect } from "react";
 
 export default function ProjectsList() {
+  const { projects, loading, error, fetchProjects } = useProjectStore();
+
+  useEffect(() => {
+    try {
+      fetchProjects();
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
   return (
     <main className="min-h-screen w-full bg-background px-6 py-16">
       <section className="max-w-7xl mx-auto space-y-12">
@@ -15,8 +26,15 @@ export default function ProjectsList() {
           </p>
         </div>
 
+        {loading && (
+          <p className="text-sm text-muted-foreground text-center">
+            Loading...
+          </p>
+        )}
+        {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 overflow-visible">
-          {mockProjects.map((project, idx) => (
+          {projects.map((project, idx) => (
             <motion.div
               key={idx}
               whileHover={{ y: -1, scale: 1.01 }}
