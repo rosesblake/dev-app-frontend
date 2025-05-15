@@ -1,23 +1,31 @@
 "use client";
 
 import Link from "next/link";
+import { useTheme } from "@/components/ThemeProvider";
 
-// TEMP: replace with real session state when ready
 const isLoggedIn = true;
 
 export default function Navbar() {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <header className="fixed w-full border-b border-border bg-background z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        {/* Left: Logo */}
-        <Link
-          href="/"
-          className="text-xl font-bold tracking-tight text-primary"
-        >
-          DevMatch
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/"
+            className="text-xl font-bold tracking-tight text-primary"
+          >
+            DevMatch
+          </Link>
+          <button
+            onClick={toggleTheme}
+            className="text-sm text-muted-foreground hover:text-primary transition"
+          >
+            {theme === "dark" ? "Light" : "Dark"}
+          </button>
+        </div>
 
-        {/* Right: Auth or Account Nav */}
         <div className="flex items-center gap-4 text-sm">
           {isLoggedIn ? (
             <>
