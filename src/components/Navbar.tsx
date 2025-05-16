@@ -4,15 +4,16 @@ import Link from "next/link";
 import { useTheme } from "@/components/ThemeProvider";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
-
-const isLoggedIn = true;
+import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
+  const isLoggedIn = true; // Ideally, this comes from auth context
 
   return (
-    <header className="fixed w-full border-b border-border bg-sidebar z-50">
+    <header className="fixed w-full border-b border-border bg-background z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+        {/* Left Side */}
         <div className="flex items-center gap-4">
           <Link
             href="/"
@@ -21,9 +22,10 @@ export default function Navbar() {
             DevMatch
           </Link>
 
-          <button
+          <Button
             onClick={toggleTheme}
-            className="relative w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-primary transition"
+            variant="ghost"
+            size="icon"
             aria-label="Toggle theme"
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -49,7 +51,7 @@ export default function Navbar() {
                 </motion.span>
               )}
             </AnimatePresence>
-          </button>
+          </Button>
         </div>
 
         <div className="flex items-center gap-4 text-sm">
@@ -61,20 +63,17 @@ export default function Navbar() {
               <Link href="/profile" className="hover:text-primary transition">
                 My Profile
               </Link>
-              <div className="bg-muted px-3 py-1.5 rounded-md font-medium text-foreground">
+              <span className="cursor-pointer bg-muted rounded-md px-3 py-1.5 text-foreground text-sm font-medium">
                 Blake Roses
-              </div>
+              </span>
             </>
           ) : (
             <>
               <Link href="/login" className="hover:text-primary transition">
                 Log In
               </Link>
-              <Link
-                href="/signup"
-                className="bg-primary text-primary-foreground px-3 py-1.5 rounded-md font-medium"
-              >
-                Sign Up
+              <Link href="/signup">
+                <Button>Sign Up</Button>
               </Link>
             </>
           )}
