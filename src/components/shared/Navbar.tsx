@@ -1,19 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useTheme } from "@/components/ThemeProvider";
+import { useTheme } from "@/components/shared/ThemeProvider";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
-  const isLoggedIn = true; // Ideally, this comes from auth context
+  const isLoggedIn = true;
 
   return (
     <header className="fixed w-full border-b border-border bg-background z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        {/* Left Side */}
         <div className="flex items-center gap-4">
           <Link
             href="/"

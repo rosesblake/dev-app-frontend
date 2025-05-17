@@ -1,7 +1,7 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import Navbar from "@/components/shared/Navbar";
+import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import ApplyModal from "@/lib/modals/ApplyModal";
 
 export default function ClientShell({

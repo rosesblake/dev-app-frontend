@@ -1,3 +1,5 @@
+import { Badge } from "@/components/ui/badge";
+
 export function TagRow({
   label,
   items,
@@ -7,9 +9,9 @@ export function TagRow({
   items: string[];
   detailsPage: boolean;
 }) {
-  const colorMap: Record<string, string> = {
-    Stack: "bg-muted text-foreground",
-    Roles: "bg-foreground/70 text-muted",
+  const variantMap: Record<string, "default" | "secondary" | "outline"> = {
+    Stack: "secondary",
+    Roles: "default",
   };
 
   const sizeClass = detailsPage ? "text-sm" : "text-[10px]";
@@ -23,14 +25,13 @@ export function TagRow({
       </span>
       <div className="flex flex-wrap gap-1">
         {items.slice(0, 5).map((item, i) => (
-          <span
+          <Badge
             key={i}
-            className={`${
-              colorMap[label] ?? "bg-muted text-foreground"
-            } px-2 py-1 rounded-full ${sizeClass}`}
+            variant={variantMap[label] ?? "secondary"}
+            className={`${sizeClass} px-2 py-1 rounded-full`}
           >
             {item}
-          </span>
+          </Badge>
         ))}
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import ProjectCard from "@/components/ProjectCard";
+import ProjectCard from "@/components/projects/ProjectCard";
 import { useProjectStore } from "@/lib/stores/projectStore";
 import { useEffect } from "react";
 

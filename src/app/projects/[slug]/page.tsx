@@ -1,7 +1,7 @@
 import { Project } from "@/types/project";
 import api from "@/lib/api";
 import { notFound } from "next/navigation";
-import { ClientProjectView } from "@/components/ClientProjectView"; // NEW
+import { ClientProjectView } from "@/components/projects/ClientProjectView"; // NEW
 
 type Props = {
   params: { slug: string };

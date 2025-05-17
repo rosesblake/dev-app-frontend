@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ClientShell from "@/components/ClientShell"; // ✅ This is now client-only
+import ClientShell from "@/components/shared/ClientShell"; // ✅ This is now client-only
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({

@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+
 import {
   Dialog,
   DialogContent,
@@ -20,10 +22,14 @@ export default function ApplyModal() {
         </DialogDescription>
 
         <p className="text-sm mt-2">Pitch yourself here!</p>
-
-        <button onClick={closeModal} className="mt-4 underline text-sm">
-          Close
-        </button>
+        <div className="mt-6 flex justify-end gap-3">
+          <Button onClick={closeModal} variant="outline" size="sm">
+            Close
+          </Button>
+          <Button onClick={closeModal} size="sm">
+            Apply
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
