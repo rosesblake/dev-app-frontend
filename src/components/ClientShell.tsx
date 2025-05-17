@@ -2,6 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import ApplyModal from "@/lib/modals/ApplyModal";
 
 export default function ClientShell({
   children,
@@ -12,6 +13,7 @@ export default function ClientShell({
     <ThemeProvider>
       <Navbar />
       {children}
+      <ApplyModal />
     </ThemeProvider>
   );
 }

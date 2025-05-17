@@ -1,4 +1,5 @@
 export interface Creator {
+  id: number;
   name: string;
   slug: string;
   bio: string;
@@ -8,6 +9,7 @@ export interface Creator {
 }
 
 export interface Project {
+  id: number;
   slug: string;
   title: string;
   description: string;
