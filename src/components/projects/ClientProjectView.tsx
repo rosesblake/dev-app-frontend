@@ -1,21 +1,54 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TagRow } from "@/components/shared/TagRow";
-import { useApplyModal } from "@/lib/stores/useApplyModal";
 import { Project } from "@/types/project";
+import { ApplicationCreate } from "@/types/application";
+import api from "@/lib/api";
+import { useAuthStore } from "@/lib/stores/useAuthStore";
 
 export function ClientProjectView({ project }: { project: Project }) {
-  const { openModal } = useApplyModal();
+  const [loading, setLoading] = useState(true);
+  const [hasApplied, setHasApplied] = useState(false);
+  const { currentUser } = useAuthStore();
 
-  const handleOpenModal = () => {
-    openModal(project.id);
+  useEffect(() => {
+    if (!currentUser) {
+      setLoading(false);
+      return;
+    }
+
+    const check = async () => {
+      try {
+        const res = await api.users.applications(currentUser.id);
+        setHasApplied(res.some((app) => app.project_id === project.id));
+      } catch (err) {
+        console.error("Error checking applications", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    check();
+  }, [currentUser, project.id]);
+
+  const handleApply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const data: ApplicationCreate = {
+      project_id: project.id,
+      status: "pending",
+    };
+    await api.applications.apply(data);
+    setHasApplied(true);
   };
+
+  if (loading) return null;
 
   return (
     <main className="min-h-screen bg-background px-6 pt-24 pb-8">
-      <section className="max-w-4xl mx-auto text-center mb-10">
+      <section className="max-w-4xl mx-auto text-center mb-8">
         <h1 className="text-5xl font-bold text-foreground mb-4">
           {project.title}
         </h1>
@@ -84,7 +117,6 @@ export function ClientProjectView({ project }: { project: Project }) {
                 {project.creator.bio}
               </p>
             )}
-
             {(project.creator.github_url || project.creator.portfolio_url) && (
               <div className="flex flex-wrap gap-4 text-sm pt-2">
                 {project.creator.github_url && (
@@ -113,13 +145,19 @@ export function ClientProjectView({ project }: { project: Project }) {
         </Card>
 
         <div className="flex justify-center gap-4 pt-6">
-          <Button
-            onClick={handleOpenModal}
-            size="lg"
-            className="rounded-full px-8 shadow-md hover:shadow-lg transition"
-          >
-            Apply
-          </Button>
+          {hasApplied ? (
+            <Button disabled size="lg" className="rounded-full px-8">
+              Applied
+            </Button>
+          ) : (
+            <Button
+              onClick={handleApply}
+              size="lg"
+              className="rounded-full px-8 shadow-md hover:shadow-lg transition"
+            >
+              Apply
+            </Button>
+          )}
           <Button
             variant="outline"
             size="lg"

@@ -1,9 +1,7 @@
 import {
   Card,
-  CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
   CardFooter,
 } from "@/components/ui/card";
 import { TagRow } from "@/components/shared/TagRow";

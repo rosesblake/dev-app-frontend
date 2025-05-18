@@ -5,11 +5,20 @@ import { useTheme } from "@/components/shared/ThemeProvider";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/lib/stores/useAuthStore";
+import api from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
-  const isLoggedIn = true;
+  const { currentUser, logout } = useAuthStore();
 
+  const handleLogout = async () => {
+    await api.users.logout();
+    logout();
+    router.push("/login");
+  };
   return (
     <header className="fixed w-full border-b border-border bg-background z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
@@ -54,16 +63,19 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-4 text-sm">
-          {isLoggedIn ? (
+          {currentUser ? (
             <>
-              <Link href="/projects" className="hover:text-primary transition">
-                Projects
-              </Link>
-              <Link href="/profile" className="hover:text-primary transition">
-                My Profile
-              </Link>
+              <Button
+                onClick={handleLogout}
+                variant="ghost"
+                size="sm"
+                className="text-xs"
+              >
+                Logout
+              </Button>
+
               <span className="cursor-pointer bg-muted rounded-md px-3 py-1.5 text-foreground text-sm font-medium">
-                Blake Roses
+                {currentUser.name}
               </span>
             </>
           ) : (
@@ -71,7 +83,7 @@ export default function Navbar() {
               <Link href="/login" className="hover:text-primary transition">
                 Log In
               </Link>
-              <Link href="/signup">
+              <Link href="/register">
                 <Button>Sign Up</Button>
               </Link>
             </>

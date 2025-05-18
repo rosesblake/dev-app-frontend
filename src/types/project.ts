@@ -20,3 +20,12 @@ export interface Project {
   figma_url?: string;
   creator: Creator;
 }
+
+export interface Application {
+  id: number;
+  project_id: number;
+  user_id: number;
+  status: "pending" | "accepted" | "rejected";
+  applied_at: string;
+  project?: Project;
+}
