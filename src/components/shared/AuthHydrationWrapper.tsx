@@ -1,4 +1,3 @@
-// app/components/shared/AuthHydrationWrapper.tsx
 "use client";
 
 import { useEffect } from "react";

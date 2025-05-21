@@ -27,6 +27,6 @@ export async function restoreSession({
       router.replace("/login");
     }
   } finally {
-    setHydrated(true); // <- this is what matters
+    setHydrated(true);
   }
 }

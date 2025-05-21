@@ -15,11 +15,11 @@ export function ClientProjectView({ project }: { project: Project }) {
   const { currentUser } = useAuthStore();
 
   useEffect(() => {
+    setLoading(true);
     if (!currentUser) {
       setLoading(false);
       return;
     }
-
     const check = async () => {
       try {
         const res = await api.users.applications(currentUser.id);
