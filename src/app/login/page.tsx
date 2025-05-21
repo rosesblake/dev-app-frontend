@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/lib/stores/useAuthStore";
 import api from "@/lib/api";
+import { useUiStore } from "@/lib/stores/useUiStore";
+import { Spinner } from "@/components/ui/Spinner";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,12 +16,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { setAccessToken, setCurrentUser } = useAuthStore();
+  const { isLoading, setLoading } = useUiStore();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     try {
+      setLoading(true);
       const { access_token } = await api.users.login(email, password);
       setAccessToken(access_token);
 
@@ -29,6 +33,8 @@ export default function LoginPage() {
       router.push("/");
     } catch (err) {
       setError("Invalid login");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,8 +75,8 @@ export default function LoginPage() {
 
         {error && <p className="text-sm text-red-500">{error}</p>}
 
-        <Button type="submit" className="w-full">
-          Log in
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading ? <Spinner className="w-4 h-4" /> : "Log in"}
         </Button>
       </form>
     </main>

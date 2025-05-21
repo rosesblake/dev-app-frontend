@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import ProjectCard from "@/components/projects/ProjectCard";
 import { useProjectStore } from "@/lib/stores/projectStore";
 import { useEffect } from "react";
+import { Spinner } from "../ui/Spinner";
 
 export default function ProjectsList() {
   const { projects, loading, error, fetchProjects } = useProjectStore();
@@ -26,11 +27,7 @@ export default function ProjectsList() {
           </p>
         </div>
 
-        {loading && (
-          <p className="text-sm text-muted-foreground text-center">
-            Loading...
-          </p>
-        )}
+        {loading && <Spinner centered />}
         {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 overflow-visible">
