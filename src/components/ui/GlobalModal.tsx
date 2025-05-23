@@ -10,7 +10,7 @@ export default function GlobalModal() {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && closeModal()}>
       <DialogTitle></DialogTitle>
-      <DialogContent className="sm:max-w-lg">{content}</DialogContent>
+      <DialogContent className="sm:max-w-2xl">{content}</DialogContent>
     </Dialog>
   );
 }

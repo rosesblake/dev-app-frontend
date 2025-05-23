@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/lib/stores/useAuthStore";
 import api from "@/lib/api";
 import { useUiStore } from "@/lib/stores/useUiStore";
+import Link from "next/link";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -97,6 +98,15 @@ export default function RegisterPage() {
         <Button type="submit" className="w-full">
           Register
         </Button>
+        <p className="text-center text-sm">
+          Already have an account?{" "}
+          <Link
+            href={"/login"}
+            className="text-primary underline hover:text-primary/80"
+          >
+            Login here
+          </Link>
+        </p>
       </form>
     </main>
   );

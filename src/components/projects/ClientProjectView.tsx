@@ -13,6 +13,7 @@ export function ClientProjectView({ project }: { project: Project }) {
   const [loading, setLoading] = useState(true);
   const [hasApplied, setHasApplied] = useState(false);
   const { currentUser } = useAuthStore();
+  const [showButtons, setShowButtons] = useState<Boolean | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -24,6 +25,7 @@ export function ClientProjectView({ project }: { project: Project }) {
       try {
         const res = await api.users.applications(currentUser.id);
         setHasApplied(res.some((app) => app.project_id === project.id));
+        setShowButtons(project.creator.id === currentUser?.id);
       } catch (err) {
         console.error("Error checking applications", err);
       } finally {
@@ -143,29 +145,30 @@ export function ClientProjectView({ project }: { project: Project }) {
             )}
           </CardContent>
         </Card>
-
-        <div className="flex justify-center gap-4 pt-6">
-          {hasApplied ? (
-            <Button disabled size="lg" className="rounded-full px-8">
-              Applied
-            </Button>
-          ) : (
+        {!showButtons && (
+          <div className="flex justify-center gap-4 pt-6">
+            {hasApplied ? (
+              <Button disabled size="lg" className="rounded-full px-8">
+                Applied
+              </Button>
+            ) : (
+              <Button
+                onClick={handleApply}
+                size="lg"
+                className="rounded-full px-8 shadow-md hover:shadow-lg transition"
+              >
+                Apply
+              </Button>
+            )}
             <Button
-              onClick={handleApply}
+              variant="outline"
               size="lg"
-              className="rounded-full px-8 shadow-md hover:shadow-lg transition"
+              className="rounded-full px-8 border-muted-foreground/40 text-muted-foreground hover:border-foreground hover:text-foreground transition"
             >
-              Apply
+              Message
             </Button>
-          )}
-          <Button
-            variant="outline"
-            size="lg"
-            className="rounded-full px-8 border-muted-foreground/40 text-muted-foreground hover:border-foreground hover:text-foreground transition"
-          >
-            Message
-          </Button>
-        </div>
+          </div>
+        )}
       </section>
     </main>
   );
