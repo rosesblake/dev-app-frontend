@@ -1,5 +1,5 @@
 import { ApplicationCreate, ApplicationRead } from "@/types/application";
-import { Project } from "@/types/project";
+import { Project, ProjectCreate, ProjectRead } from "@/types/project";
 import { authFetch } from "@/lib/utils/authFetch";
 import { User } from "@/types/user";
 
@@ -87,6 +87,12 @@ const api = {
       });
       if (!res.ok) return null;
       return res.json();
+    },
+    create: async (data: ProjectCreate): Promise<ProjectRead> => {
+      return authFetch("/projects/", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
     },
   },
   applications: {

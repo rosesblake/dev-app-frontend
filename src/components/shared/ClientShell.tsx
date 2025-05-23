@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import { AuthHydrationWrapper } from "@/components/shared/AuthHydrationWrapper";
 import { useAuthStore } from "@/lib/stores/useAuthStore";
 import { GlobalSpinner } from "./GlobalSpinner";
+import GlobalModal from "../ui/GlobalModal";
 
 export default function ClientShell({
   children,
@@ -16,6 +17,8 @@ export default function ClientShell({
     <ThemeProvider>
       <AuthHydrationWrapper />
       <GlobalSpinner />
+      <GlobalModal />
+
       {isHydrated && (
         <>
           <Navbar />

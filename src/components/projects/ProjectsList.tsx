@@ -1,11 +1,19 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import ProjectCard from "@/components/projects/ProjectCard";
 import { useProjectStore } from "@/lib/stores/projectStore";
-import { useEffect } from "react";
 import { Spinner } from "../ui/Spinner";
+import { useUiStore } from "@/lib/stores/useUiStore";
+import AddProjectButton from "@/components/projects/AddProjectButton";
+import { useModalStore } from "@/lib/stores/modalStore";
+import CreateProjectForm from "./CreateProjectForm";
+import { useAuthStore } from "@/lib/stores/useAuthStore";
+import LoginPage from "@/app/login/page";
 
 export default function ProjectsList() {
   const { projects, loading, error, fetchProjects } = useProjectStore();
+  const { openModal } = useModalStore();
+  const { currentUser } = useAuthStore();
 
   useEffect(() => {
     try {
@@ -15,8 +23,19 @@ export default function ProjectsList() {
     }
   }, []);
 
+  const handleModalChoice = () => {
+    return currentUser
+      ? openModal(<CreateProjectForm />)
+      : openModal(
+          <LoginPage
+            isModal
+            onSuccess={() => openModal(<CreateProjectForm />)}
+          />
+        );
+  };
+
   return (
-    <main className="min-h-screen w-full bg-background px-6 py-16">
+    <main className="w-full bg-background px-6 py-16 relative">
       <section className="max-w-7xl mx-auto space-y-12">
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold tracking-tight">
@@ -43,6 +62,8 @@ export default function ProjectsList() {
           ))}
         </div>
       </section>
+
+      <AddProjectButton onClick={handleModalChoice} />
     </main>
   );
 }

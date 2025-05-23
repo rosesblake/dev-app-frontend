@@ -21,6 +21,22 @@ export interface Project {
   creator: Creator;
 }
 
+export interface ProjectCreate {
+  title: string;
+  description: string;
+  stack: string[];
+  roles_needed: string[];
+  commitment_level: string;
+  github_repo?: string;
+  figma_url?: string;
+}
+
+export interface ProjectRead extends ProjectCreate {
+  id: number;
+  slug: string;
+  creator: Creator;
+}
+
 export interface Application {
   id: number;
   project_id: number;

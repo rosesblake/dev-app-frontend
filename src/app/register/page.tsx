@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/lib/stores/useAuthStore";
 import api from "@/lib/api";
+import { useUiStore } from "@/lib/stores/useUiStore";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { setAccessToken } = useAuthStore();
+  const { setAccessToken, setCurrentUser } = useAuthStore();
+  const { setLoading } = useUiStore();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -27,12 +29,18 @@ export default function RegisterPage() {
     setError("");
 
     try {
+      setLoading(true);
       await api.users.register(form);
       const { access_token } = await api.users.login(form.email, form.password);
       setAccessToken(access_token);
+
+      const user = await api.users.getMe(access_token);
+      setCurrentUser(user);
+
       router.push("/");
     } catch (err) {
       setError("Registration failed");
+      setLoading(false);
     }
   };
 
