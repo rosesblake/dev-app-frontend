@@ -2,11 +2,14 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ApplicationRead } from "@/types/application";
+import { Button } from "@/components/ui/button";
 
 export default function ApplicantsList({
   applications,
+  onStatusChange,
 }: {
   applications: ApplicationRead[];
+  onStatusChange: (status: string, appId: number) => void;
 }) {
   if (!applications.length) {
     return (
@@ -15,6 +18,7 @@ export default function ApplicantsList({
       </p>
     );
   }
+
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold text-foreground">Applicants</h2>
@@ -29,22 +33,38 @@ export default function ApplicantsList({
             )}
             <div className="text-sm">
               <span className="font-semibold text-muted-foreground">
-                Stack:{" "}
-              </span>
+                Stack:
+              </span>{" "}
               {app.user.stack?.join(", ") || "N/A"}
             </div>
             <div className="text-sm">
-              <span className="font-semibold text-muted-foreground">
-                Role:{" "}
-              </span>
+              <span className="font-semibold text-muted-foreground">Role:</span>{" "}
               {app.user.role?.join(", ") || "N/A"}
             </div>
             <div className="text-sm">
               <span className="font-semibold text-muted-foreground">
-                Status:{" "}
-              </span>
+                Status:
+              </span>{" "}
               {app.status}
             </div>
+
+            {app.status === "pending" && (
+              <div className="flex gap-2 pt-2">
+                <Button
+                  size="sm"
+                  onClick={() => onStatusChange("accepted", app.id)}
+                >
+                  Accept
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onStatusChange("rejected", app.id)}
+                >
+                  Reject
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       ))}

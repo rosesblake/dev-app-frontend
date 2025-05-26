@@ -109,6 +109,15 @@ const api = {
     getProjectApps: async (projectId: number): Promise<ApplicationRead[]> => {
       return authFetch(`/applications/project/${projectId}`);
     },
+    updateStatus: async (
+      newStatus: string,
+      applicationId: number
+    ): Promise<ApplicationRead> => {
+      return authFetch(`/applications/update/${applicationId}`, {
+        method: "POST",
+        body: JSON.stringify({ status: newStatus }),
+      });
+    },
   },
 };
 

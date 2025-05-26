@@ -51,6 +51,16 @@ export function ClientProjectView({ project }: { project: Project }) {
     setHasApplied(true);
   };
 
+  const handleStatusChange = async (newStatus: string, appId: number) => {
+    try {
+      await api.applications.updateStatus(newStatus, appId);
+      const updatedApps = await api.applications.getProjectApps(project.id);
+      setApplications(updatedApps);
+    } catch (e) {
+      console.error("Could not update application status", e);
+    }
+  };
+
   if (loading) return null;
 
   return (
@@ -171,7 +181,12 @@ export function ClientProjectView({ project }: { project: Project }) {
             </Button>
           </div>
         )}
-        {showButtons && <ApplicantsList applications={applications} />}
+        {showButtons && (
+          <ApplicantsList
+            applications={applications}
+            onStatusChange={handleStatusChange}
+          />
+        )}
       </section>
     </main>
   );
