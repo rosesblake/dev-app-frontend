@@ -41,11 +41,9 @@ const api = {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...user,
-          role: [],
           bio: null,
           github_url: null,
           portfolio_url: null,
-          stack: [],
         }),
       });
       if (!res.ok) {
@@ -101,6 +99,15 @@ const api = {
         method: "POST",
         body: JSON.stringify(data),
       });
+    },
+    getUserApps: async (userId: number): Promise<ApplicationRead[]> => {
+      return authFetch(`/applications/user/${userId}`);
+    },
+    getReceivedApps: async (userId: number): Promise<ApplicationRead[]> => {
+      return authFetch(`/applications/received/${userId}`);
+    },
+    getProjectApps: async (projectId: number): Promise<ApplicationRead[]> => {
+      return authFetch(`/applications/project/${projectId}`);
     },
   },
 };

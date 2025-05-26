@@ -9,6 +9,8 @@ import { useAuthStore } from "@/lib/stores/useAuthStore";
 import api from "@/lib/api";
 import { useUiStore } from "@/lib/stores/useUiStore";
 import Link from "next/link";
+import { stackOptions, roleOptions } from "@/lib/constants";
+import { MultiSelect } from "@/components/shared/MultiSelect";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -17,6 +19,8 @@ export default function RegisterPage() {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    stack: [] as string[],
+    role: [] as string[],
     password: "",
   });
   const [error, setError] = useState("");
@@ -28,9 +32,9 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
-      setLoading(true);
       await api.users.register(form);
       const { access_token } = await api.users.login(form.email, form.password);
       setAccessToken(access_token);
@@ -41,9 +45,19 @@ export default function RegisterPage() {
       router.push("/");
     } catch (err) {
       setError("Registration failed");
+    } finally {
       setLoading(false);
     }
   };
+
+  const mappedStackOptions = stackOptions.map((opt) => ({
+    label: opt,
+    value: opt,
+  }));
+  const mappedRoleOptions = roleOptions.map((opt) => ({
+    label: opt,
+    value: opt,
+  }));
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4">
@@ -58,6 +72,18 @@ export default function RegisterPage() {
 
         <div className="space-y-4">
           <div className="space-y-1">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="space-y-1">
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
@@ -69,14 +95,22 @@ export default function RegisterPage() {
           </div>
 
           <div className="space-y-1">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              required
+            <Label>Tech Stack</Label>
+            <MultiSelect
+              options={mappedStackOptions}
+              values={form.stack}
+              onChange={(stack) => setForm((f) => ({ ...f, stack }))}
+              placeholder="Select your tech stack"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <Label>Role</Label>
+            <MultiSelect
+              options={mappedRoleOptions}
+              values={form.role}
+              onChange={(role) => setForm((f) => ({ ...f, role }))}
+              placeholder="Select your role(s)"
             />
           </div>
 

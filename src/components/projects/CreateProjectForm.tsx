@@ -21,49 +21,7 @@ import {
 import api from "@/lib/api";
 import { useUiStore } from "@/lib/stores/useUiStore";
 import { useProjectStore } from "@/lib/stores/projectStore";
-
-const commitmentLevels = ["Casual", "Part-Time", "Full-Time"];
-const stackOptions = [
-  "JavaScript",
-  "TypeScript",
-  "React",
-  "Next.js",
-  "Vue",
-  "Angular",
-  "Node.js",
-  "Express",
-  "Python",
-  "Django",
-  "Flask",
-  "FastAPI",
-  "Ruby",
-  "Rails",
-  "Go",
-  "Java",
-  "Spring",
-  "C#",
-  ".NET",
-  "PostgreSQL",
-  "MySQL",
-  "MongoDB",
-  "Redis",
-  "SQLite",
-  "GraphQL",
-  "REST",
-  "Docker",
-  "Kubernetes",
-  "AWS",
-  "GCP",
-  "Azure",
-  "Tailwind",
-  "CSS",
-  "HTML",
-  "Figma",
-  "Framer",
-  "Zustand",
-  "Redux",
-];
-const roleOptions = ["Frontend", "Backend", "Fullstack", "Designer", "PM"];
+import { stackOptions, roleOptions, commitmentLevels } from "@/lib/constants";
 
 export default function CreateProjectForm() {
   const closeModal = useModalStore((s) => s.closeModal);

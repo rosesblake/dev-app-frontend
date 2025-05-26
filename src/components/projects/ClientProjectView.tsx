@@ -5,15 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TagRow } from "@/components/shared/TagRow";
 import { Project } from "@/types/project";
-import { ApplicationCreate } from "@/types/application";
+import { ApplicationCreate, ApplicationRead } from "@/types/application";
 import api from "@/lib/api";
 import { useAuthStore } from "@/lib/stores/useAuthStore";
+import ApplicantsList from "./ApplicantsList";
 
 export function ClientProjectView({ project }: { project: Project }) {
   const [loading, setLoading] = useState(true);
   const [hasApplied, setHasApplied] = useState(false);
   const { currentUser } = useAuthStore();
   const [showButtons, setShowButtons] = useState<Boolean | null>(null);
+  const [applications, setApplications] = useState<ApplicationRead[]>([]);
 
   useEffect(() => {
     setLoading(true);
@@ -23,8 +25,11 @@ export function ClientProjectView({ project }: { project: Project }) {
     }
     const check = async () => {
       try {
-        const res = await api.users.applications(currentUser.id);
-        setHasApplied(res.some((app) => app.project_id === project.id));
+        const projectApps = await api.applications.getProjectApps(project.id);
+        setApplications(projectApps);
+
+        const userApps = await api.users.applications(currentUser.id);
+        setHasApplied(userApps.some((app) => app.project.id === project.id));
         setShowButtons(project.creator.id === currentUser?.id);
       } catch (err) {
         console.error("Error checking applications", err);
@@ -94,18 +99,15 @@ export function ClientProjectView({ project }: { project: Project }) {
             )}
           </div>
         )}
-
         <div className="space-y-6">
           <TagRow label="Stack" items={project.stack} detailsPage />
           <TagRow label="Roles" items={project.roles_needed} detailsPage />
         </div>
-
         <div className="flex justify-end mt-2">
           <p className="text-xs text-muted-foreground italic">
             Commitment: {project.commitment_level}
           </p>
         </div>
-
         <Card className="bg-muted/50">
           <CardContent className="px-6 py-2 space-y-3">
             <p className="text-xs font-semibold text-muted-foreground uppercase">
@@ -169,6 +171,7 @@ export function ClientProjectView({ project }: { project: Project }) {
             </Button>
           </div>
         )}
+        {showButtons && <ApplicantsList applications={applications} />}
       </section>
     </main>
   );

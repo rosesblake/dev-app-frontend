@@ -6,6 +6,7 @@ import { AuthHydrationWrapper } from "@/components/shared/AuthHydrationWrapper";
 import { useAuthStore } from "@/lib/stores/useAuthStore";
 import { GlobalSpinner } from "./GlobalSpinner";
 import GlobalModal from "../ui/GlobalModal";
+import { Toaster } from "sonner";
 
 export default function ClientShell({
   children,
@@ -18,6 +19,7 @@ export default function ClientShell({
       <AuthHydrationWrapper />
       <GlobalSpinner />
       <GlobalModal />
+      <Toaster />
 
       {isHydrated && (
         <>

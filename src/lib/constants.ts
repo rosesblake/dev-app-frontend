@@ -1,0 +1,52 @@
+// src/lib/constants.ts
+
+export const stackOptions = [
+  "JavaScript",
+  "TypeScript",
+  "React",
+  "Next.js",
+  "Vue",
+  "Angular",
+  "Node.js",
+  "Express",
+  "Python",
+  "Django",
+  "Flask",
+  "FastAPI",
+  "Ruby",
+  "Rails",
+  "Go",
+  "Java",
+  "Spring",
+  "C#",
+  ".NET",
+  "PostgreSQL",
+  "MySQL",
+  "MongoDB",
+  "Redis",
+  "SQLite",
+  "GraphQL",
+  "REST",
+  "Docker",
+  "Kubernetes",
+  "AWS",
+  "GCP",
+  "Azure",
+  "Tailwind",
+  "CSS",
+  "HTML",
+  "Figma",
+  "Framer",
+  "Zustand",
+  "Redux",
+];
+
+export const roleOptions = [
+  "Frontend",
+  "Backend",
+  "Fullstack",
+  "Designer",
+  "PM",
+];
+
+export const commitmentLevels = ["Casual", "Part-Time", "Full-Time"];
