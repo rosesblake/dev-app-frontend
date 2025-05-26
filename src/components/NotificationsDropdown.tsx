@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,8 +16,6 @@ type Props = {
 export default function NotificationsDropdown({ notifications }: Props) {
   const router = useRouter();
 
-  if (notifications.length === 0) return null;
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -24,27 +24,33 @@ export default function NotificationsDropdown({ notifications }: Props) {
           aria-label="Notifications"
         >
           <Bell className="h-5 w-5 text-foreground" />
-          <span className="absolute top-0 right-0 inline-flex h-2 w-2 rounded-full bg-red-500" />
+          {notifications.length > 0 && (
+            <span className="absolute top-0 right-0 inline-flex h-2 w-2 rounded-full bg-red-500" />
+          )}
         </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-80 p-4">
         <h4 className="font-medium text-sm mb-2">New Applications</h4>
         <ul className="max-h-64 overflow-y-auto">
-          {notifications.map((app) => (
-            <li key={app.id} className="mb-2 border-b pb-2">
-              <div className="text-sm font-semibold">{app.project.title}</div>
-              <div className="text-xs text-muted-foreground">
-                from {app.user.name}
-              </div>
-              <button
-                onClick={() => router.push(`/projects/${app.project.slug}`)}
-                className="cursor-pointer text-sm font-medium text-blue-500 hover:text-primary/80 transition-colors"
-              >
-                View project →
-              </button>
-            </li>
-          ))}
+          {notifications.length > 0 ? (
+            notifications.map((app) => (
+              <li key={app.id} className="mb-2 border-b pb-2">
+                <div className="text-sm font-semibold">{app.project.title}</div>
+                <div className="text-xs text-muted-foreground">
+                  from {app.user.name}
+                </div>
+                <button
+                  onClick={() => router.push(`/projects/${app.project.slug}`)}
+                  className="cursor-pointer text-blue-500 hover:underline text-xs mt-1"
+                >
+                  View project
+                </button>
+              </li>
+            ))
+          ) : (
+            <p className="text-sm text-muted-foreground">No new applications</p>
+          )}
         </ul>
       </DropdownMenuContent>
     </DropdownMenu>

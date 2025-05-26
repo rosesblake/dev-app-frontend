@@ -28,25 +28,54 @@ export default function ApplicantsList({
             <div className="text-base font-medium text-foreground">
               {app.user.name}
             </div>
+
             {app.user.bio && (
               <p className="text-sm text-muted-foreground">{app.user.bio}</p>
             )}
+
             <div className="text-sm">
               <span className="font-semibold text-muted-foreground">
                 Stack:
               </span>{" "}
               {app.user.stack?.join(", ") || "N/A"}
             </div>
+
             <div className="text-sm">
               <span className="font-semibold text-muted-foreground">Role:</span>{" "}
               {app.user.role?.join(", ") || "N/A"}
             </div>
+
             <div className="text-sm">
               <span className="font-semibold text-muted-foreground">
                 Status:
               </span>{" "}
               {app.status}
             </div>
+
+            {(app.user.github_url || app.user.portfolio_url) && (
+              <div className="flex flex-wrap gap-4 pt-2 text-sm">
+                {app.user.github_url && (
+                  <a
+                    href={app.user.github_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline hover:opacity-80"
+                  >
+                    GitHub →
+                  </a>
+                )}
+                {app.user.portfolio_url && (
+                  <a
+                    href={app.user.portfolio_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline hover:opacity-80"
+                  >
+                    Portfolio →
+                  </a>
+                )}
+              </div>
+            )}
 
             {app.status === "pending" && (
               <div className="flex gap-2 pt-2">

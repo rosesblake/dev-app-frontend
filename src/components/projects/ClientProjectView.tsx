@@ -9,6 +9,7 @@ import { ApplicationCreate, ApplicationRead } from "@/types/application";
 import api from "@/lib/api";
 import { useAuthStore } from "@/lib/stores/useAuthStore";
 import ApplicantsList from "./ApplicantsList";
+import { useNotificationStore } from "@/lib/stores/notificationStore";
 
 export function ClientProjectView({ project }: { project: Project }) {
   const [loading, setLoading] = useState(true);
@@ -16,6 +17,7 @@ export function ClientProjectView({ project }: { project: Project }) {
   const { currentUser } = useAuthStore();
   const [showButtons, setShowButtons] = useState<Boolean | null>(null);
   const [applications, setApplications] = useState<ApplicationRead[]>([]);
+  const { fetchNotifications } = useNotificationStore();
 
   useEffect(() => {
     setLoading(true);
@@ -56,6 +58,10 @@ export function ClientProjectView({ project }: { project: Project }) {
       await api.applications.updateStatus(newStatus, appId);
       const updatedApps = await api.applications.getProjectApps(project.id);
       setApplications(updatedApps);
+
+      if (currentUser) {
+        await fetchNotifications(currentUser.id);
+      }
     } catch (e) {
       console.error("Could not update application status", e);
     }

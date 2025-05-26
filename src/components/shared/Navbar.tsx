@@ -6,60 +6,30 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/lib/stores/useAuthStore";
-import api from "@/lib/api";
-import { useRouter } from "next/navigation";
+import { useNotificationStore } from "@/lib/stores/notificationStore";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import NotificationsDropdown from "@/components/NotificationsDropdown";
-import { ApplicationRead } from "@/types/application";
+import UserDropdown from "./UserDropdown";
 
 export default function Navbar() {
-  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
-  const { currentUser, logout } = useAuthStore();
-  const [notifications, setNotifications] = useState<ApplicationRead[]>([]);
+  const { currentUser } = useAuthStore();
+  const { notifications, fetchNotifications, clearNotifications } =
+    useNotificationStore();
 
   useEffect(() => {
     if (!currentUser) {
-      setNotifications([]);
+      clearNotifications();
       return;
     }
 
-    const userId = currentUser.id;
-    let isMounted = true;
-
-    async function checkApps() {
-      try {
-        const res = await api.applications.getReceivedApps(userId);
-        const pending = res.filter((app) => app.status === "pending");
-
-        if (pending.length > 0) {
-          setNotifications(pending);
-          toast(`You have ${pending.length} new application(s)`, {
-            action: {
-              label: "View",
-              onClick: () => router.refresh(),
-            },
-          });
-        }
-      } catch (e) {
-        if (isMounted) console.error("Error checking applications", e);
+    fetchNotifications(currentUser.id).then(() => {
+      if (notifications.length > 0) {
+        toast(`You have ${notifications.length} new application(s)`);
       }
-    }
-
-    checkApps();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [currentUser]);
-
-  const handleLogout = async () => {
-    setNotifications([]);
-    await api.users.logout();
-    logout();
-    router.push("/login");
-  };
+    });
+  }, [currentUser, fetchNotifications, clearNotifications]);
 
   return (
     <header className="fixed w-full border-b border-border bg-background z-50">
@@ -107,18 +77,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4 text-sm">
           {currentUser ? (
             <>
-              <Button
-                onClick={handleLogout}
-                variant="ghost"
-                size="sm"
-                className="text-xs"
-              >
-                Logout
-              </Button>
-
-              <span className="cursor-pointer bg-muted rounded-md px-3 py-1.5 text-foreground text-sm font-medium">
-                {currentUser.name}
-              </span>
+              <UserDropdown />
               <NotificationsDropdown notifications={notifications} />
             </>
           ) : (
